@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>fall-platform-dependencies</artifactId>
+		<groupId>com.fallframework.platform</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>com.wordplay</groupId>
+	<artifactId>gateway</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<scm>
+		<connection>scm:git:git://github.com/hidlestone/gateway.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/hidlestone/gateway.git</developerConnection>
+		<url>https://github.com/hidlestone/gateway</url>
+	</scm>
+
+	<dependencies>
+		<!--gateway-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<!-- gateWay作为网关，也要注册进nacos服务中心-->
+		<dependency>
+			<groupId>com.fallframework.platform</groupId>
+			<artifactId>fall-platform-starter-control-dependency</artifactId>
+		</dependency>
+		<!-- test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
