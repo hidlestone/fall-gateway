@@ -2,10 +2,12 @@ package com.wordplay.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author zhuangpf
  */
+@EnableDiscoveryClient
 @SpringBootApplication
 public class GatewayApplication {
 
