@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * 限流后异常处理
+ * JsonSentinelGatewayBlockExceptionHandler 重写 SentinelGatewayBlockExceptionHandler
  *
  * @author zhuangpf
  */
@@ -37,10 +38,9 @@ public class JsonSentinelGatewayBlockExceptionHandler implements WebExceptionHan
 
 	private Mono<Void> writeResponse(ServerResponse response, ServerWebExchange exchange) {
 		//return response.writeTo(exchange, contextSupplier.get());
-
 		ServerHttpResponse serverHttpResponse = exchange.getResponse();
 		serverHttpResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-		byte[] datas = "{\"code\":403,\"msg\":\"限流了\"}".getBytes(StandardCharsets.UTF_8);
+		byte[] datas = "{\"code\":403,\"msg\":\"rquest limited\"}".getBytes(StandardCharsets.UTF_8);
 		DataBuffer buffer = serverHttpResponse.bufferFactory().wrap(datas);
 		return serverHttpResponse.writeWith(Mono.just(buffer));
 	}

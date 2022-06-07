@@ -37,7 +37,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * 配置限流的异常处理器:SentinelGatewayBlockExceptionHandler
+	 * 配置限流的异常处理器:SentinelGatewayBlockExceptionHandler<br/>
 	 * 自定义异常提示：当发生限流、熔断异常时，会返回定义的提示信息。
 	 */
 	@Bean
