@@ -19,8 +19,26 @@ spring:
         namespace: platform-dev
         group: DEFAULT_GROUP
         service: ${fall.gateway.service.name}${fall.gateway.service.version}
-        ip: 127.0.0.1       #用于指定注册地址127.0.0.1
+        ip: 127.0.0.1       # 用于指定注册地址127.0.0.1
+    sentinel:
+      transport:
+        # 配置 Sentinel Dashboard 的地址
+        dashboard: localhost:8080
+        port: 8719    # 默认8719 ，如果端口被占用，端口号会自动 +1
     gateway:
+      globalcors:
+        # 统一配置跨域请求
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            allowed-methods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
       discovery:
         locator:
           enabled: true # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
@@ -28,6 +46,43 @@ spring:
         - id: platform-console-control-payn  # 路由ID,没有固定的规则但要求唯一，建议配合服务名
           #uri: http://localhost:8001  # 匹配后提供服务的路由地址
           uri: lb://platform-console-control-payn
+          filters:
+            #- StripPrefix=1  # 用户请求路径是/api/brand,而真实路径是/brand，需要去掉/api才是真实路径，此时可以使用StripPrefix功能来实现路径的过滤操作
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10    # 令牌桶每秒填充速率
+                redis-rate-limiter.burstCapacity: 100   # 令牌桶总容量
+                key-resolver: '#{@ipKeyResolver}'   # 使用 SpEL 表达式按名称引用 bean
           predicates:
             - Path=/**  # 断言，路径相匹配的进行路由
-            - Host=localhost:**
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true #是否应该有超时
+        isolation: # 隔离策略
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 2000 #服务调用超时时间,THREAD隔离模式下是请求超时是会取消调用线程从而立即返回的，SEMAPHORE模式下会等待响应回来再判断是否超时。
+            interruptOnTimeout: true   #执行超时的时候，是否需要将他中断
+            interruptOnCancel: true  #是否在方法执行被取消时中断方法
+            
+# actuator 监控配置
+management:
+  # actuator端口 如果不配置做默认使用上面8080端口
+  #server:
+    #port: 8080
+  endpoints:
+    web:
+      exposure:
+        # 默认值访问health,info端点  用*可以包含全部端点
+        include: "*"
+      # 修改访问路径 2.0之前默认是/; 2.0默认是/actuator可以通过这个属性值修改
+      base-path: /actuator
+  endpoint:
+    shutdown:
+      enabled: true # 打开shutdown端点
+    health:
+      show-details: always # 获得健康检查中所有指标的详细信息
