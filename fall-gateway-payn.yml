@@ -54,7 +54,7 @@ spring:
                 redis-rate-limiter.burstCapacity: 1   # 令牌桶总容量
                 key-resolver: '#{@apiKeyResolver}'   # 使用 SpEL 表达式按名称引用 bean
           predicates:
-            - Path=/**  # 断言，路径相匹配的进行路由
+            - Path=/**  # 断言，路径相匹配的进行路由 /console/**
 
 hystrix:
   command:
