@@ -40,7 +40,7 @@ public class JsonSentinelGatewayBlockExceptionHandler implements WebExceptionHan
 		// return response.writeTo(exchange, contextSupplier.get());
 		ServerHttpResponse serverHttpResponse = exchange.getResponse();
 		serverHttpResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-		byte[] datas = "{\"code\":403,\"msg\":\"rquest limited\"}".getBytes(StandardCharsets.UTF_8);
+		byte[] datas = "{\"code\":403,\"message\":\"rquest limited\"}".getBytes(StandardCharsets.UTF_8);
 		DataBuffer buffer = serverHttpResponse.bufferFactory().wrap(datas);
 		return serverHttpResponse.writeWith(Mono.just(buffer));
 	}

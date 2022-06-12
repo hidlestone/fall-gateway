@@ -38,7 +38,8 @@ public class GatewayConfig {
 
 	/**
 	 * 配置限流的异常处理器:SentinelGatewayBlockExceptionHandler<br/>
-	 * 自定义异常提示：当发生限流、熔断异常时，会返回定义的提示信息。
+	 * 自定义异常提示：当发生限流、熔断异常时，会返回定义的提示信息。<br/>
+	 * 即返回：{"code":403,"message":"rquest limited"}
 	 */
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
@@ -71,15 +72,15 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * 配置限流规则
+	 * 初始化配置限流规则 TODO
 	 */
 	private void initGatewayRules() {
 		Set<GatewayFlowRule> rules = new HashSet<>();
-		//order-center 路由ID，和配置文件中的一致就行
-		rules.add(new GatewayFlowRule("order-center")
+		// order-center 路由ID，和配置文件中的一致就行
+		/*rules.add(new GatewayFlowRule("order-center")
 				.setCount(1) // 限流阈值
 				.setIntervalSec(1) // 统计时间窗口，单位是秒，默认是 1 秒
-		);
+		);*/
 		GatewayRuleManager.loadRules(rules);
 	}
 

@@ -50,9 +50,9 @@ spring:
             #- StripPrefix=1  # 用户请求路径是/api/brand,而真实路径是/brand，需要去掉/api才是真实路径，此时可以使用StripPrefix功能来实现路径的过滤操作
             - name: RequestRateLimiter
               args:
-                redis-rate-limiter.replenishRate: 10    # 令牌桶每秒填充速率
-                redis-rate-limiter.burstCapacity: 100   # 令牌桶总容量
-                key-resolver: '#{@ipKeyResolver}'   # 使用 SpEL 表达式按名称引用 bean
+                redis-rate-limiter.replenishRate: 1    # 令牌桶每秒填充速率
+                redis-rate-limiter.burstCapacity: 1   # 令牌桶总容量
+                key-resolver: '#{@apiKeyResolver}'   # 使用 SpEL 表达式按名称引用 bean
           predicates:
             - Path=/**  # 断言，路径相匹配的进行路由
 

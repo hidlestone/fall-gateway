@@ -7,7 +7,15 @@ import org.springframework.context.annotation.Primary;
 import reactor.core.publisher.Mono;
 
 /**
- * 限流配置类。超出限流的url请求都将返回429(Too Many Requests)状态。
+ * 限流配置类。超出限流的url请求都将返回429(Too Many Requests)状态。<br/>
+ * 使用 gateway 自身的filters 配置实现，<br/>
+ * <p>
+ * filters:<br/>
+ * - name: RequestRateLimiter<br/>
+ * args:<br/>
+ * redis-rate-limiter.replenishRate: 10    # 令牌桶每秒填充速率<br/>
+ * redis-rate-limiter.burstCapacity: 100   # 令牌桶总容量<br/>
+ * key-resolver: '#{@ipKeyResolver}'   	   # 使用 SpEL 表达式按名称引用 bean
  *
  * @author zhuangpf
  */
@@ -30,7 +38,7 @@ public class RequestRateLimiterConfig {
 	@Bean
 	public KeyResolver userKeyResolver() {
 		// 按用户限流
-		return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("user"));
+		return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("userId"));
 	}
 
 	/**
