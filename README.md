@@ -241,3 +241,6 @@ public JsonSentinelGatewayBlockExceptionHandler sentinelGatewayBlockExceptionHan
 }
 ```
 
+安装Sentinel  
+Sentinel Dashboard 的地址:   
+http://localhost:8080/#/dashboard/home
